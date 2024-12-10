@@ -7,22 +7,21 @@ const Search = ({ onSearchChange }) => {
   const [search, setSearch] = useState(null);
 
   //   The inputValue is what's typed into the input... So we'll use that value and pass it to the fetch method and to the url to get the data needed.
-  const loadOptions = (inputValue) => {
-    return fetch(
-      `${GEO_API_URL}/cities?minPopulation=1000000&namePrefix=${inputValue}`,
-      geoApiOptions
-    )
-      .then((response) => response.json())
-      .then((response) => {
+  const loadOptions = async (inputValue) => {
+    const url = inputValue
+      ? `${GEO_API_URL}/cities?minPopulation=1000&countryIds=NG&namePrefix=${inputValue}`
+      : `${GEO_API_URL}/cities?minPopulation=1000&countryIds=NG`;
+
+    const response = await fetch(url, geoApiOptions);
+    const resData = await response.json();
+    return {
+      options: resData.data.map((city) => {
         return {
-          options: response.data.map((city) => {
-            return {
-              value: `${city.latitude} ${city.longitude}`,
-              label: `${city.name} ${city.countryCode}`,
-            };
-          }),
+          value: `${city.latitude} ${city.longitude}`,
+          label: `${city.name} ${city.countryCode}`,
         };
-      });
+      }),
+    };
   };
 
   const handleChange = (searchData) => {
@@ -33,7 +32,7 @@ const Search = ({ onSearchChange }) => {
   return (
     <>
       <AsyncPaginate
-        placeholder="search for a city"
+        placeholder="search for a city in Nigeria"
         debounceTimeout={600}
         value={search}
         onChange={handleChange}
