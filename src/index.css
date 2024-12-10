@@ -1,0 +1,11 @@
+body {
+  font-family: "Roboto", Arial !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #d5d4d4;
+  background-image: url("/bg-img/clouds.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
